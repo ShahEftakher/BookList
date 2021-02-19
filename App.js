@@ -1,3 +1,4 @@
+//Book object constructor function
 function Book(bookName, author, publishYear, genre) {
   this.bookName = bookName;
   this.author = author;
@@ -5,26 +6,30 @@ function Book(bookName, author, publishYear, genre) {
   this.genre = genre;
 }
 
-function Storage(books) {
-  this.books = books;
-  
+//storage constructor function
+function Storage() {
+  this.books = [];
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
-    let booksFromStorage = 
-})
+//UI constructor function
+function UI(cardBody) {
+  this.cardBody = cardBody;
+}
 
-const ui = new UI(document.getElementById("book-card"));
+//instantiate storage
 const storage = new Storage();
-Storage.prototype.addToLocalStore = function (book) {
-    this.books.push(book);
-    window.localStorage.setItem("books", JSON.stringify(this.books))
-};
+//instantiate UI
+const ui = new UI(document.getElementById("book-card"));
 
-Storage.prototype.sendBooksToDOM = function () {
-  this.books.forEach((book) => {
-    ui.addBookCard(book);
-  });
+document.addEventListener("DOMContentLoaded",()=>{
+  storage.getBooks()
+});
+
+//storage prototype methods
+//add a book to local storage
+Storage.prototype.addToLocalStore = function (book) {
+  this.books.push(book);
+  window.localStorage.setItem("books", JSON.stringify(this.books));
 };
 
 Storage.prototype.getBooks = function () {
@@ -32,18 +37,37 @@ Storage.prototype.getBooks = function () {
   if (booksInStorage === null) {
     window.localStorage.setItem("books", JSON.stringify([]));
   }
-  booksInStorage = JSON.parse(window.localStorage.getItem("tasks"));
-  return booksInStorage;
+  booksInStorage = JSON.parse(window.localStorage.getItem("books"));
+  this.books=booksInStorage;
+  storage.sendBooksToDOM();
 };
 
-function UI(cardBody) {
-  this.cardBody = cardBody;
+//Add books to DOM
+Storage.prototype.sendBooksToDOM = function () {
+  this.books.forEach((book) => {
+    ui.addBookCard(book);
+  });
+};
+
+//Remove from storage
+Storage.prototype.removeFromStorage = function(book){
+  let currentIndex = this.books.indexOf(book);
+  if(currentIndex > -1){
+    this.books.splice(currentIndex,1)
+  }
+  //store the changes to the storage
+  window.localStorage.setItem("books", JSON.stringify(this.books))
 }
 
-UI.prototype.removeBook = function (cardInnerDiv) {
+//UI prototype method
+//remove a book from the DOM
+UI.prototype.removeBook = function (cardInnerDiv, book) {
+  console.log(cardInnerDiv)
+  storage.removeFromStorage(book)
   cardInnerDiv.remove();
 };
 
+//Add a book
 UI.prototype.addBook = function () {
   let bookName = document.getElementById("book-name").value;
   let authorName = document.getElementById("author-name").value;
@@ -60,9 +84,11 @@ UI.prototype.addBook = function () {
   }
   let newBook = new Book(bookName, authorName, publishedYear, genre);
   this.addBookCard(newBook);
+  storage.addToLocalStore(newBook);
   console.log(newBook);
 };
 
+//clearing input fields
 UI.prototype.clearFields = function () {
   document.getElementById("book-name").value = "";
   document.getElementById("author-name").value = "";
@@ -70,6 +96,7 @@ UI.prototype.clearFields = function () {
   document.getElementById("book-genre").value = "";
 };
 
+//Add books by list
 UI.prototype.addBookCard = function (book) {
   let cardInnerDiv = document.createElement("div");
   cardInnerDiv.className += "card mb-3";
@@ -84,11 +111,11 @@ UI.prototype.addBookCard = function (book) {
   let removeBtn = document.createElement("button");
   let btnDiv = document.createElement("div");
   btnDiv.className += "d-grid gap-2 d-md-flex justify-content-md-end mb-4";
-  removeBtn.className += "btn btn-outline-danger";
+  removeBtn.className += "btn btn-outline-danger me-4";
   removeBtn.type += "button";
   removeBtn.innerHTML = "Remove";
   removeBtn.addEventListener("click", () => {
-    this.removeBook(cardInnerDiv);
+    this.removeBook(cardInnerDiv, book);
   });
   authorName.className += "list-group-item";
   publishedYear.className += "list-group-item";
@@ -107,6 +134,7 @@ UI.prototype.addBookCard = function (book) {
   this.cardBody.appendChild(cardInnerDiv);
 };
 
+//add button event handler
 const addBtn = document.getElementById("add-book-btn");
 addBtn.addEventListener("click", (event) => {
   event.preventDefault();
@@ -114,6 +142,7 @@ addBtn.addEventListener("click", (event) => {
   ui.clearFields();
 });
 
+//enter event handler
 const submitForm = (document.getElementById("book-input").onsubmit = (
   event
 ) => {
