@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <title>BookList</title>
+  </head>
+  <body>
+    <h1 class="text-center display-4">Book List</h1>
+    <form id="book-input" class="container-md">
+      <input type="submit" style="display: none" />
+      <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Book Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="book-name"
+          placeholder="Book Name..."
+        />
+      </div>
+      <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">Author</label>
+        <input
+          type="text"
+          class="form-control"
+          id="author-name"
+          placeholder="Author Name..."
+        />
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="formGroupExampleInput2" class="form-label"
+            >Published</label
+          >
+          <input
+            id="published-year"
+            type="text"
+            class="form-control"
+            placeholder="Year"
+            aria-label="First name"
+          />
+        </div>
+
+        <div class="col">
+          <label for="formGroupExampleInput2" class="form-label">Genre</label>
+          <input
+            id="book-genre"
+            type="text"
+            class="form-control"
+            placeholder="Genre"
+            aria-label="Last name"
+          />
+        </div>
+      </div>
+      <label class="form-label"></label>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button id="add-book-btn" type="button" class="btn btn-outline-primary">
+          Add Book
+        </button>
+      </div>
+    </form>
+    <div id="book-card" class="container-md"></div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+      crossorigin="anonymous"
+    ></script>
+    <script src="App.js"></script>
+  </body>
+</html>
