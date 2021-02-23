@@ -21,8 +21,8 @@ const storage = new Storage();
 //instantiate UI
 const ui = new UI(document.getElementById("book-card"));
 
-document.addEventListener("DOMContentLoaded",()=>{
-  storage.getBooks()
+document.addEventListener("DOMContentLoaded", () => {
+  storage.getBooks();
 });
 
 //storage prototype methods
@@ -38,7 +38,7 @@ Storage.prototype.getBooks = function () {
     window.localStorage.setItem("books", JSON.stringify([]));
   }
   booksInStorage = JSON.parse(window.localStorage.getItem("books"));
-  this.books=booksInStorage;
+  this.books = booksInStorage;
   storage.sendBooksToDOM();
 };
 
@@ -50,20 +50,19 @@ Storage.prototype.sendBooksToDOM = function () {
 };
 
 //Remove from storage
-Storage.prototype.removeFromStorage = function(book){
+Storage.prototype.removeFromStorage = function (book) {
   let currentIndex = this.books.indexOf(book);
-  if(currentIndex > -1){
-    this.books.splice(currentIndex,1)
+  if (currentIndex > -1) {
+    this.books.splice(currentIndex, 1);
   }
   //store the changes to the storage
-  window.localStorage.setItem("books", JSON.stringify(this.books))
-}
+  window.localStorage.setItem("books", JSON.stringify(this.books));
+};
 
 //UI prototype method
 //remove a book from the DOM
 UI.prototype.removeBook = function (cardInnerDiv, book) {
-  console.log(cardInnerDiv)
-  storage.removeFromStorage(book)
+  storage.removeFromStorage(book);
   cardInnerDiv.remove();
 };
 
@@ -85,7 +84,6 @@ UI.prototype.addBook = function () {
   let newBook = new Book(bookName, authorName, publishedYear, genre);
   this.addBookCard(newBook);
   storage.addToLocalStore(newBook);
-  console.log(newBook);
 };
 
 //clearing input fields
